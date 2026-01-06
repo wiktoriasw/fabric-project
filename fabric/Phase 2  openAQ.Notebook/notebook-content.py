@@ -9,11 +9,14 @@
 # META   "dependencies": {
 # META     "lakehouse": {
 # META       "default_lakehouse": "64e04aa9-1d1a-4e60-864a-cf577f69cd39",
-# META       "default_lakehouse_name": "lh_bronze",
+# META       "default_lakehouse_name": "Lakehouse",
 # META       "default_lakehouse_workspace_id": "75f1c875-0ee7-47ad-a0a7-385b33d47af7",
 # META       "known_lakehouses": [
 # META         {
 # META           "id": "64e04aa9-1d1a-4e60-864a-cf577f69cd39"
+# META         },
+# META         {
+# META           "id": "b61aff81-6991-4cbb-8f4b-880569e38a47"
 # META         }
 # META       ]
 # META     }
@@ -51,9 +54,6 @@ sensors_measure = spark.table("openaq_days_yearly_raw")
 # CELL ********************
 
 sensors_measure.printSchema()
-
-#double -> liczby zmiennoprzecinkowe 64 bit
-#long -> liczba całkowita 64 bit
 
 # METADATA ********************
 
@@ -95,8 +95,8 @@ sensors_measure =(sensors_measure
    .withColumn("date", F.to_date("utc_from"))
    .withColumn("year", F.year("utc_from"))
    .withColumn("date_key", F.date_format("date", "yyyyMMdd").cast("int"))
-   .withColumn("parameter_name", F.lower(F.trim(F.col("parameter_name")))) #lower zamienia litery na małe, a trim usuwa białe znaki, na początku i końcu
-   .withColumn("parameter_units", F.lower(F.trim(F.col("parameter_units")))) #lower zamienia litery na małe, a trim usuwa białe znaki, na początku i końcu
+   .withColumn("parameter_name", F.lower(F.trim(F.col("parameter_name"))))
+   .withColumn("parameter_units", F.lower(F.trim(F.col("parameter_units"))))
 
 )
 
@@ -168,8 +168,6 @@ display(sensors_measure)
 
 sensors_measure.groupBy("parameter_name", "parameter_units").count().show()
 
-#ppm (parts per million) -> stężenie objętościowe -> „ile cząsteczek gazu na milion cząsteczek powietrza”
-
 # METADATA ********************
 
 # META {
@@ -234,11 +232,11 @@ sensors_measure.printSchema()
 
 # CELL ********************
 
-# sensors_measure.filter(
-#     (F.col("sensor_id") == 2644) &
-#     (F.col("parameter_name") == "no2") &
-#     (F.col("utc_from") == F.to_timestamp(F.lit("2025-06-08 04:00:00")))
-# ).show(truncate=False)
+sensors_measure.filter(
+    (F.col("sensor_id") == 2644) &
+    (F.col("parameter_name") == "no2") &
+    (F.col("utc_from") == F.to_timestamp(F.lit("2025-06-08 04:00:00")))
+).show(truncate=False)
 
 # METADATA ********************
 
@@ -603,33 +601,6 @@ l = (
 )
 
 joined = m.join(l, ["sensor_id", "parameter_name"], "inner")
-
-# METADATA ********************
-
-# META {
-# META   "language": "python",
-# META   "language_group": "synapse_pyspark"
-# META }
-
-# CELL ********************
-
-# joined_left = m.join(
-#     l,
-#     ["sensor_id", "parameter_name"],
-#     "left"
-# )
-
-# METADATA ********************
-
-# META {
-# META   "language": "python",
-# META   "language_group": "synapse_pyspark"
-# META }
-
-# CELL ********************
-
-# m.count(), l.count(), joined.count(), joined_left.count()
-
 
 # METADATA ********************
 
