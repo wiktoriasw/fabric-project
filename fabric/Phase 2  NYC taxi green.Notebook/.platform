@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Notebook",
+    "displayName": "Phase 2  NYC taxi green"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "6feef6e9-ce9a-9789-4392-0d6d1251dde4"
+  }
+}

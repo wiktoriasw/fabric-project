@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Notebook",
+    "displayName": "Phase 2  openAQ"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "eae7e1d3-e0d8-a876-45f0-2d47b4f55435"
+  }
+}

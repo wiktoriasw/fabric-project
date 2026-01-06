@@ -1,0 +1,195 @@
+{
+  "properties": {
+    "activities": [
+      {
+        "type": "ForEach",
+        "typeProperties": {
+          "isSequential": true,
+          "items": {
+            "value": "@json('[\"01\",\"02\",\"03\",\"04\",\"05\",\"06\",\"07\",\"08\",\"09\",\"10\",\"11\",\"12\"]')",
+            "type": "Expression"
+          },
+          "activities": [
+            {
+              "type": "Copy",
+              "typeProperties": {
+                "source": {
+                  "type": "BinarySource",
+                  "formatSettings": {
+                    "type": "BinaryReadSettings"
+                  },
+                  "storeSettings": {
+                    "type": "HttpReadSettings",
+                    "requestMethod": "GET"
+                  },
+                  "datasetSettings": {
+                    "type": "Binary",
+                    "typeProperties": {
+                      "location": {
+                        "type": "HttpServerLocation",
+                        "relativeUrl": {
+                          "value": "@concat(\n  'trip-data/',\n  pipeline().parameters.pDataset,\n  '_tripdata_',\n  pipeline().parameters.pYear,\n  '-',\n  item(),\n  '.parquet'\n)",
+                          "type": "Expression"
+                        }
+                      }
+                    },
+                    "externalReferences": {
+                      "connection": "62bda37a-af8d-4eb7-80d0-ad7f66a2556f"
+                    },
+                    "annotations": []
+                  }
+                },
+                "sink": {
+                  "type": "BinarySink",
+                  "storeSettings": {
+                    "type": "LakehouseWriteSettings"
+                  },
+                  "datasetSettings": {
+                    "type": "Binary",
+                    "typeProperties": {
+                      "location": {
+                        "type": "LakehouseLocation",
+                        "folderPath": {
+                          "value": "@concat(\n  'staging/nyc_taxi/',\n  pipeline().parameters.pDataset,\n  '/year=',\n  pipeline().parameters.pYear,\n  '/month=',\n  item()\n)",
+                          "type": "Expression"
+                        },
+                        "fileName": {
+                          "value": "@concat(\n  pipeline().parameters.pDataset,\n  '_tripdata_',\n  pipeline().parameters.pYear,\n  '-',\n  item(),\n  '.parquet'\n)\n",
+                          "type": "Expression"
+                        }
+                      }
+                    },
+                    "linkedService": {
+                      "name": "lh_bronze",
+                      "properties": {
+                        "type": "Lakehouse",
+                        "typeProperties": {
+                          "artifactId": "7f69cd39-cf57-864a-4e60-1d1a64e04aa9",
+                          "workspaceId": "00000000-0000-0000-0000-000000000000",
+                          "rootFolder": "Files"
+                        },
+                        "annotations": []
+                      }
+                    },
+                    "annotations": []
+                  }
+                },
+                "enableStaging": false
+              },
+              "policy": {
+                "timeout": "0.12:00:00",
+                "retry": 3,
+                "retryIntervalInSeconds": 30,
+                "secureInput": false,
+                "secureOutput": false
+              },
+              "name": "Copy data1",
+              "dependsOn": []
+            },
+            {
+              "type": "Copy",
+              "typeProperties": {
+                "source": {
+                  "type": "BinarySource",
+                  "formatSettings": {
+                    "type": "BinaryReadSettings"
+                  },
+                  "storeSettings": {
+                    "type": "LakehouseReadSettings",
+                    "recursive": true
+                  },
+                  "datasetSettings": {
+                    "type": "Binary",
+                    "typeProperties": {
+                      "location": {
+                        "type": "LakehouseLocation",
+                        "folderPath": {
+                          "value": "@concat(\n  'staging/nyc_taxi/',\n  pipeline().parameters.pDataset,\n  '/year=',\n  pipeline().parameters.pYear,\n  '/month=',\n  item()\n)",
+                          "type": "Expression"
+                        }
+                      }
+                    },
+                    "linkedService": {
+                      "name": "lh_bronze",
+                      "properties": {
+                        "type": "Lakehouse",
+                        "typeProperties": {
+                          "artifactId": "7f69cd39-cf57-864a-4e60-1d1a64e04aa9",
+                          "workspaceId": "00000000-0000-0000-0000-000000000000",
+                          "rootFolder": "Files"
+                        },
+                        "annotations": []
+                      }
+                    },
+                    "annotations": []
+                  }
+                },
+                "sink": {
+                  "type": "BinarySink",
+                  "storeSettings": {
+                    "type": "LakehouseWriteSettings"
+                  },
+                  "datasetSettings": {
+                    "type": "Binary",
+                    "typeProperties": {
+                      "location": {
+                        "type": "LakehouseLocation",
+                        "folderPath": {
+                          "value": "@concat(\n  'bronze/nyc_taxi/',\n  pipeline().parameters.pDataset,\n  '/year=',\n  pipeline().parameters.pYear,\n  '/month=',\n  item()\n)",
+                          "type": "Expression"
+                        }
+                      }
+                    },
+                    "linkedService": {
+                      "name": "lh_bronze",
+                      "properties": {
+                        "type": "Lakehouse",
+                        "typeProperties": {
+                          "artifactId": "7f69cd39-cf57-864a-4e60-1d1a64e04aa9",
+                          "workspaceId": "00000000-0000-0000-0000-000000000000",
+                          "rootFolder": "Files"
+                        },
+                        "annotations": []
+                      }
+                    },
+                    "annotations": []
+                  }
+                },
+                "enableStaging": false
+              },
+              "policy": {
+                "timeout": "0.12:00:00",
+                "retry": 3,
+                "retryIntervalInSeconds": 30,
+                "secureInput": false,
+                "secureOutput": false
+              },
+              "name": "Copy_Staging_to_Bronze",
+              "dependsOn": [
+                {
+                  "activity": "Copy data1",
+                  "dependencyConditions": [
+                    "Succeeded"
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "name": "ForEachMonth",
+        "description": "Bronze ingestion for NYC TLC yellow taxi data.\nSource: TLC CloudFront monthly Parquet files.\nPattern: HTTP → Lakehouse staging (binary) → Bronze.\nSupports multiple years and handles missing months.",
+        "dependsOn": []
+      }
+    ],
+    "parameters": {
+      "pDataset": {
+        "type": "string",
+        "defaultValue": "yellow"
+      },
+      "pYear": {
+        "type": "string",
+        "defaultValue": "2017"
+      }
+    }
+  }
+}

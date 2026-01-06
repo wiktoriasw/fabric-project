@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Dataflow",
+    "displayName": "Phase 1 Dataflow_openAQ_measurements_NYC_sensors"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "bd916ff8-9c1a-9aa6-40ee-5664134c1815"
+  }
+}

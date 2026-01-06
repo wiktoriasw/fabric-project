@@ -1,0 +1,11 @@
+expression 'DirectLake - Warehouse' =
+		let
+		    Source = AzureStorage.DataLake("https://onelake.dfs.fabric.microsoft.com/75f1c875-0ee7-47ad-a0a7-385b33d47af7/b0933eef-8877-49af-8328-85d610818dd6", [HierarchicalNavigation=true])
+		in
+		    Source
+	lineageTag: 20fc15ee-3939-4e01-b061-fbdc80fc5fb5
+
+	annotation PBI_IncludeFutureArtifacts = False
+
+	annotation PBI_RemovedChildren = [{"remoteItemId":{"analysisServicesObject":{"sourceName":"FactAirQualityDaily_finale","sourceLineageTag":null}},"objectType":"Table"}]
+

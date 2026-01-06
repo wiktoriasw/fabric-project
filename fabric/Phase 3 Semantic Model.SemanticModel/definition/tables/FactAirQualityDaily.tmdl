@@ -1,0 +1,217 @@
+table FactAirQualityDaily
+	lineageTag: 2dd05c66-fc5e-4908-8a0e-573b77d28598
+	sourceLineageTag: [gold].[FactAirQualityDaily]
+
+	measure avg =
+			
+			AVERAGE ( FactAirQualityDaily[avg_value] )
+		lineageTag: f25c8b6a-9f04-4fdb-9def-527c5458453e
+
+		changedProperty = Name
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure no2_avg =
+			
+			CALCULATE (
+			    [avg],
+			    FactAirQualityDaily[parameter_name] = "no2"
+			)
+		formatString: 0
+		lineageTag: 8731d289-8f8c-45dc-96f6-2025476af66e
+
+		changedProperty = Name
+
+	measure no2_q98 =
+			
+			CALCULATE (
+			    [q98],
+			    FactAirQualityDaily[parameter_name] = "no2"
+			)
+		lineageTag: a9b8eec5-d6bb-4233-90b8-0dd3f617e369
+
+		changedProperty = Name
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure observations =
+			
+			SUM ( FactAirQualityDaily[observations_count] )
+		formatString: 0
+		lineageTag: db072533-7b30-4012-865a-7973b8b1b28b
+
+		changedProperty = Name
+
+	measure pm25_avg =
+			
+			CALCULATE (
+			    [avg],
+			    FactAirQualityDaily[parameter_name] = "pm25"
+			)
+		formatString: 0
+		lineageTag: ae559dff-ba3a-4c8a-adce-3878ab92e074
+
+		changedProperty = Name
+
+	measure pm25_q98 =
+			
+			CALCULATE(
+			    MAX ( FactAirQualityDaily[q98_value] ),
+			    FactAirQualityDaily[parameter_name] = "pm25"
+			)
+		lineageTag: 037e43b2-89e3-4faf-9cd7-d7784a2ab575
+
+		changedProperty = Name
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure q98 =
+			
+			MAX ( FactAirQualityDaily[q98_value] )
+		lineageTag: 00c3bbee-f82b-46e8-beb4-4fe10df8d6a2
+
+		changedProperty = Name
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure pm25_spike_value = ```
+			
+			IF( [pm25_spike] = 1, [pm25_avg], BLANK() )
+			
+			```
+		formatString: 0
+		lineageTag: 5268549e-23da-4b38-b687-e5f990a17e4c
+
+		changedProperty = Name
+
+	measure has_pm25 =
+			
+			IF( NOT ISBLANK([pm25_avg]), 1, 0 )
+		formatString: 0
+		lineageTag: b447aa15-d6de-4b9c-aacb-f473c122964d
+
+		changedProperty = Name
+
+	measure pm25_spike =
+			
+			IF( [pm25_avg] >= 30, 1, 0 )
+		lineageTag: 6205ba3d-7412-4a96-9d93-5e4e6108ee5a
+
+		changedProperty = Name
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure no2_spike =
+			
+			IF( [no2_avg] >= 0.03, 1, 0 )
+		formatString: 0
+		lineageTag: 16ae927f-0f1b-411d-b624-53dde20a0447
+
+		changedProperty = Name
+
+	measure no2_spike_value = ```
+			
+			IF( [no2_spike] = 1, [no2_avg], BLANK() )
+			
+			```
+		lineageTag: d8237fd4-4845-4aaa-a961-76132fbbe15c
+
+		changedProperty = Name
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure has_no2 =
+			
+			IF( NOT ISBLANK([no2_avg]), 1, 0 )
+		formatString: 0
+		lineageTag: b4dc2abb-41ef-40d6-b786-5532cbb40c84
+
+		changedProperty = Name
+
+	column date
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 1c47fe41-ad27-444e-a140-f3dc46492789
+		sourceLineageTag: date
+		summarizeBy: none
+		sourceColumn: date
+
+		annotation SummarizationSetBy = Automatic
+
+	column date_key
+		dataType: int64
+		formatString: 0
+		lineageTag: a5ad1016-ffb8-4623-802b-9b831b665fb7
+		sourceLineageTag: date_key
+		summarizeBy: none
+		sourceColumn: date_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column location_id
+		dataType: int64
+		formatString: 0
+		lineageTag: f0a1eb0e-8cb6-443e-bc2f-6f5fcb43099a
+		sourceLineageTag: location_id
+		summarizeBy: none
+		sourceColumn: location_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column parameter_name
+		dataType: string
+		lineageTag: 1767323d-13b9-4248-b343-9c54023c00ba
+		sourceLineageTag: parameter_name
+		summarizeBy: none
+		sourceColumn: parameter_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column parameter_units
+		dataType: string
+		lineageTag: 47df7dde-4b32-4fc6-a349-299d68a856c8
+		sourceLineageTag: parameter_units
+		summarizeBy: none
+		sourceColumn: parameter_units
+
+		annotation SummarizationSetBy = Automatic
+
+	column avg_value
+		dataType: double
+		lineageTag: 6cbbe046-f2c7-4aed-9912-4669d22051ce
+		sourceLineageTag: avg_value
+		summarizeBy: sum
+		sourceColumn: avg_value
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column q98_value
+		dataType: double
+		lineageTag: aa3df52f-98a1-4691-90ce-db9e155b3fd5
+		sourceLineageTag: q98_value
+		summarizeBy: sum
+		sourceColumn: q98_value
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column observations_count
+		dataType: int64
+		formatString: 0
+		lineageTag: b2ef0bdb-d6f0-4265-85e3-da496102ae32
+		sourceLineageTag: observations_count
+		summarizeBy: sum
+		sourceColumn: observations_count
+
+		annotation SummarizationSetBy = Automatic
+
+	partition FactAirQualityDaily = entity
+		mode: directLake
+		source
+			entityName: FactAirQualityDaily
+			schemaName: gold
+			expressionSource: 'DirectLake - Warehouse'
+

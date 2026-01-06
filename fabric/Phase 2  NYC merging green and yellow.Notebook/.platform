@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Notebook",
+    "displayName": "Phase 2  NYC merging green and yellow"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "9e1fdd83-22e3-891b-4a65-bc326d10a48f"
+  }
+}

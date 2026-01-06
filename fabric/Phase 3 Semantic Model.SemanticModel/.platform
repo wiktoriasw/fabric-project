@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "Phase 3 Semantic Model"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "ecfddec5-ff82-8f21-4f4b-145038372cfc"
+  }
+}

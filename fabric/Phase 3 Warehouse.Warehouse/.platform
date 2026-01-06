@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Warehouse",
+    "displayName": "Phase 3 Warehouse"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "10818dd6-85d6-8328-49af-8877b0933eef"
+  }
+}

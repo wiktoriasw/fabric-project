@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Dataflow",
+    "displayName": "Phase 1 Dataflow_worldbank_ECB_FX"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "6725513b-a5be-8c25-4f94-cf4417b61eb6"
+  }
+}

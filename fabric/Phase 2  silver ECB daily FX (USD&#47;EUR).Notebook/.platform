@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Notebook",
+    "displayName": "Phase 2  silver ECB daily FX (USD/EUR)"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "143b4a3b-d3e7-baa6-4194-54b4eaa4ab81"
+  }
+}

@@ -1,0 +1,48 @@
+table DimZone
+	lineageTag: 926f1f0e-4a03-4cc1-8b82-014ee46b5f8b
+	sourceLineageTag: [gold].[DimZone]
+
+	column ZoneKey
+		dataType: int64
+		formatString: 0
+		lineageTag: d2bfefb7-db41-43bd-9725-02806fae717a
+		sourceLineageTag: ZoneKey
+		summarizeBy: none
+		sourceColumn: ZoneKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column Borough
+		dataType: string
+		lineageTag: 3ba4e19a-80ec-4463-852c-8f314adf2e68
+		sourceLineageTag: Borough
+		summarizeBy: none
+		sourceColumn: Borough
+
+		annotation SummarizationSetBy = Automatic
+
+	column Zone
+		dataType: string
+		lineageTag: 63c02599-b03f-457c-947d-14cadf97f8dd
+		sourceLineageTag: Zone
+		summarizeBy: none
+		sourceColumn: Zone
+
+		annotation SummarizationSetBy = Automatic
+
+	column service_zone
+		dataType: string
+		lineageTag: 0bb81e3d-1d85-4e6b-a4e2-c7fd267a0cae
+		sourceLineageTag: service_zone
+		summarizeBy: none
+		sourceColumn: service_zone
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimZone = entity
+		mode: directLake
+		source
+			entityName: DimZone
+			schemaName: gold
+			expressionSource: 'DirectLake - Warehouse'
+

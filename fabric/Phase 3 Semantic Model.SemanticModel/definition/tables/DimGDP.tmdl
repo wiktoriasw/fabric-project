@@ -1,0 +1,61 @@
+table DimGDP
+	lineageTag: b7fa5b25-a0fe-4522-9d98-63f3972d3e82
+	sourceLineageTag: [gold].[DimGDP]
+
+	column CountryCode
+		dataType: string
+		lineageTag: f8ef4a58-e4b0-4ff1-96c3-3094adad1dff
+		sourceLineageTag: CountryCode
+		summarizeBy: none
+		sourceColumn: CountryCode
+
+		annotation SummarizationSetBy = Automatic
+
+	column Year
+		dataType: int64
+		formatString: 0
+		lineageTag: 58590835-9485-48ba-8cdb-897cbe45d18b
+		sourceLineageTag: Year
+		summarizeBy: none
+		sourceColumn: Year
+
+		annotation SummarizationSetBy = Automatic
+
+	column DateKey
+		dataType: int64
+		formatString: 0
+		lineageTag: a09a3fe4-b18a-4db4-88a5-a46587bab78f
+		sourceLineageTag: DateKey
+		summarizeBy: none
+		sourceColumn: DateKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column Date
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 74f63711-423b-46d3-8431-dfab2e6ec811
+		sourceLineageTag: Date
+		summarizeBy: none
+		sourceColumn: Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column GDP_USD
+		dataType: double
+		lineageTag: 13009a09-7582-4c59-a43f-a4da4e474292
+		sourceLineageTag: GDP_USD
+		summarizeBy: none
+		sourceColumn: GDP_USD
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition DimGDP = entity
+		mode: directLake
+		source
+			entityName: DimGDP
+			schemaName: gold
+			expressionSource: 'DirectLake - Warehouse'
+

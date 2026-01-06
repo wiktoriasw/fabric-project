@@ -1,0 +1,49 @@
+{
+  "properties": {
+    "activities": [
+      {
+        "type": "ForEach",
+        "typeProperties": {
+          "isSequential": true,
+          "items": {
+            "value": "@json('[\"2009\",\"2010\",\"2011\",\"2012\",\"2013\",\"2014\",\"2015\",\"2016\",\"2017\",\"2018\",\"2019\",\"2020\",\"2021\",\"2022\",\"2023\",\"2024\",\"2025\"]')",
+            "type": "Expression"
+          },
+          "activities": [
+            {
+              "type": "InvokePipeline",
+              "typeProperties": {
+                "parameters": {
+                  "pDataset": "green",
+                  "pYear": {
+                    "value": "@item()",
+                    "type": "Expression"
+                  }
+                },
+                "waitOnCompletion": true,
+                "workspaceId": "00000000-0000-0000-0000-000000000000",
+                "pipelineId": "4b9244b9-d4c8-8e0e-4cb3-81d6c725f354",
+                "operationType": "InvokeFabricPipeline"
+              },
+              "externalReferences": {
+                "connection": "64315a21-b49e-49f7-b33a-0ccde97d7ea0"
+              },
+              "policy": {
+                "timeout": "0.12:00:00",
+                "retry": 0,
+                "retryIntervalInSeconds": 30,
+                "secureInput": false,
+                "secureOutput": false
+              },
+              "name": "Invoke pipeline1",
+              "description": "Bronze ingestion for NYC TLC yellow taxi data.\nSource: TLC CloudFront monthly Parquet files.\nPattern: HTTP → Lakehouse staging (binary) → Bronze.\nSupports multiple years and handles missing months.",
+              "dependsOn": []
+            }
+          ]
+        },
+        "name": "ForEach1",
+        "dependsOn": []
+      }
+    ]
+  }
+}

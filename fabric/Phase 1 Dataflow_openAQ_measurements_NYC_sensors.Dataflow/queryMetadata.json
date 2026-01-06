@@ -1,0 +1,39 @@
+{
+  "formatVersion": "202502",
+  "computeEngineSettings": {},
+  "name": "Df_sensors",
+  "queryGroups": [],
+  "documentLocale": "en-US",
+  "queriesMetadata": {
+    "openaq_days_yearly_raw_1": {
+      "queryId": "b5a536df-aaaa-4481-bfdc-91c8ff92f9d1",
+      "queryName": "openaq_days_yearly_raw_1",
+      "loadEnabled": false
+    },
+    "DefaultDestination": {
+      "queryId": "a8444ce3-56e8-4cef-8931-48599de9a1df",
+      "queryName": "DefaultDestination",
+      "isHidden": true,
+      "loadEnabled": false
+    },
+    "openaq_days_yearly_raw_1_DataDestination": {
+      "queryId": "fc840ef1-3369-408e-8b8b-81d5944249c9",
+      "queryName": "openaq_days_yearly_raw_1_DataDestination",
+      "isHidden": true,
+      "loadEnabled": false
+    }
+  },
+  "connections": [
+    {
+      "path": "Lakehouse",
+      "kind": "Lakehouse",
+      "connectionId": "{\"ClusterId\":\"8ddfd1c9-e048-42e1-8c23-76867efd2075\",\"DatasourceId\":\"477cadb0-4aae-4157-a743-6152b53ee4c3\"}"
+    },
+    {
+      "path": "https://api.openaq.org/",
+      "kind": "Web",
+      "connectionId": "{\"ClusterId\":\"8ddfd1c9-e048-42e1-8c23-76867efd2075\",\"DatasourceId\":\"aa474b27-1cad-477e-8d17-ffca381f2e72\"}"
+    }
+  ],
+  "fastCombine": true
+}

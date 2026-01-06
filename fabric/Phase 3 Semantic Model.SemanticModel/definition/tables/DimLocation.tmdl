@@ -1,0 +1,80 @@
+table DimLocation
+	lineageTag: 802586a1-fdd7-4a8a-b230-4fc5713bc7e9
+	sourceLineageTag: [gold].[DimLocation]
+
+	column location_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 7b151a49-c05a-4dcf-a12d-39b0078b05d3
+		sourceLineageTag: location_id
+		summarizeBy: none
+		sourceColumn: location_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column location_name
+		dataType: string
+		lineageTag: 3fc4266d-c4b9-48ec-b485-837fba8f832c
+		sourceLineageTag: location_name
+		summarizeBy: none
+		sourceColumn: location_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column country_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 6a307d25-8083-46e0-a86b-3699563ca979
+		sourceLineageTag: country_id
+		summarizeBy: none
+		sourceColumn: country_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column country_code
+		dataType: string
+		lineageTag: 72b23711-255b-4aaf-9f4a-8fc4fd420f95
+		sourceLineageTag: country_code
+		summarizeBy: none
+		sourceColumn: country_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column country_name
+		dataType: string
+		lineageTag: 8aba4fe7-3793-4f1a-b484-dc6f81fe2913
+		sourceLineageTag: country_name
+		summarizeBy: none
+		sourceColumn: country_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column latitude
+		dataType: double
+		lineageTag: 1b5f7a6d-98d0-440b-81c6-26ea4c0badef
+		sourceLineageTag: latitude
+		summarizeBy: none
+		sourceColumn: latitude
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column longitude
+		dataType: double
+		lineageTag: 31238c10-804e-4fe8-9a32-599710a4462b
+		sourceLineageTag: longitude
+		summarizeBy: none
+		sourceColumn: longitude
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition DimLocation = entity
+		mode: directLake
+		source
+			entityName: DimLocation
+			schemaName: gold
+			expressionSource: 'DirectLake - Warehouse'
+
