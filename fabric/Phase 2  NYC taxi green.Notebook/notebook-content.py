@@ -9,7 +9,7 @@
 # META   "dependencies": {
 # META     "lakehouse": {
 # META       "default_lakehouse": "64e04aa9-1d1a-4e60-864a-cf577f69cd39",
-# META       "default_lakehouse_name": "lh_bronze",
+# META       "default_lakehouse_name": "Lakehouse",
 # META       "default_lakehouse_workspace_id": "75f1c875-0ee7-47ad-a0a7-385b33d47af7",
 # META       "known_lakehouses": [
 # META         {
@@ -506,20 +506,6 @@ df_green_years_lpep_fixed.show(5)
 
 # CELL ********************
 
-df_green_years_lpep_fixed.filter(
-    (F.col("PULocationID") == F.col("DOLocationID")) &
-    (F.col("duration_min") < 5)
-).count()
-
-# METADATA ********************
-
-# META {
-# META   "language": "python",
-# META   "language_group": "synapse_pyspark"
-# META }
-
-# CELL ********************
-
 df_green_years_lpep_loc_fixed = df_green_years_lpep_fixed.filter(
     ~(
         (F.col("PULocationID") == F.col("DOLocationID")) &
@@ -818,7 +804,7 @@ df_without_outliers = (
     .withColumn("dropoff_day", F.date_format("lpep_dropoff_datetime", "E"))
     .withColumn("pickup_day_no", F.dayofweek("lpep_pickup_datetime"))
     .withColumn("dropoff_day_no", F.dayofweek("lpep_dropoff_datetime"))
-    .withColumn("is_weekend", F.col("pickup_day_no").isin(1, 7))       # Sun or Sat
+    .withColumn("is_weekend", F.col("pickup_day_no").isin(1, 7))
     .withColumn("pickup_time", F.date_format("lpep_pickup_datetime", "HH:mm"))
     .withColumn("dropoff_time", F.date_format("lpep_dropoff_datetime", "HH:mm"))
     .withColumn("date_key", F.date_format("pickup_date", "yyyyMMdd").cast("int"))
@@ -944,7 +930,7 @@ ordered_cols = [
 
     "fare_amount",
     "total_amount",
-    "payment_type", #do usunięcia
+    "payment_type",
 
     "passenger_count"
 ]
@@ -1011,7 +997,6 @@ df_zone.show(5)
 
 df_enriched = (
     df_green_final
-      # pickup zone
       .join(
           df_zone.selectExpr(
               "LocationID as PUZoneKey",
@@ -1049,7 +1034,6 @@ df_enriched.show(10, truncate=False)
 
 df_enriched_2 = (
     df_enriched
-      # pickup zone
       .join(
           df_zone.selectExpr(
               "LocationID as DOZoneKey",
@@ -1091,9 +1075,9 @@ silver_green_path = "Files/silver/nyc_taxi/green"
     df_enriched_2
     .write
     .format("delta")
-    .mode("overwrite")               # na start OK; później możesz użyć append
+    .mode("overwrite")
     .option("overwriteSchema", "true")
-    .partitionBy("year", "month")    # super dla odczytu per okres
+    .partitionBy("year", "month")
     .save(silver_green_path)
 )
 

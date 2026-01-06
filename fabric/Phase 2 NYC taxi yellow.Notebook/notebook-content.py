@@ -9,7 +9,7 @@
 # META   "dependencies": {
 # META     "lakehouse": {
 # META       "default_lakehouse": "64e04aa9-1d1a-4e60-864a-cf577f69cd39",
-# META       "default_lakehouse_name": "lh_bronze",
+# META       "default_lakehouse_name": "Lakehouse",
 # META       "default_lakehouse_workspace_id": "75f1c875-0ee7-47ad-a0a7-385b33d47af7",
 # META       "known_lakehouses": [
 # META         {
@@ -570,7 +570,7 @@ ordered_cols = [
 
     "fare_amount",
     "total_amount",
-    "payment_type", #do usunięcia
+    "payment_type",
 
     "passenger_count"
 ]
@@ -713,21 +713,11 @@ silver_yellow_path = "Files/silver/nyc_taxi/yellow"
     df_enriched_2
     .write
     .format("delta")
-    .mode("overwrite")               # na start OK; później możesz użyć append
+    .mode("overwrite")
     .option("overwriteSchema", "true")
-    .partitionBy("year", "month")    # super dla odczytu per okres
+    .partitionBy("year", "month")
     .save(silver_yellow_path)
 )
-
-# METADATA ********************
-
-# META {
-# META   "language": "python",
-# META   "language_group": "synapse_pyspark"
-# META }
-
-# CELL ********************
-
 
 # METADATA ********************
 

@@ -611,33 +611,6 @@ joined = m.join(l, ["sensor_id", "parameter_name"], "inner")
 
 # CELL ********************
 
-# joined_left = m.join(
-#     l,
-#     ["sensor_id", "parameter_name"],
-#     "left"
-# )
-
-# METADATA ********************
-
-# META {
-# META   "language": "python",
-# META   "language_group": "synapse_pyspark"
-# META }
-
-# CELL ********************
-
-# m.count(), l.count(), joined.count(), joined_left.count()
-
-
-# METADATA ********************
-
-# META {
-# META   "language": "python",
-# META   "language_group": "synapse_pyspark"
-# META }
-
-# CELL ********************
-
 display(joined)
 
 # METADATA ********************
