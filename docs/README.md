@@ -21,8 +21,8 @@ The primary objective is to analyze the relationships between **urban mobility p
 ---
 
 ## Documentation Index
-- [Data Dictionary](docs/data_dictionary.md)
-- [Lineage Diagrams](docs/lineage_diagrams.md)
+- [Data Dictionary](data_dictionary.md)
+- [Lineage Diagrams](lineage_diagrams.md)
 
 ---
 
