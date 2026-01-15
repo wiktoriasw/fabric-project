@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "DataPipeline",
+    "displayName": "GE Validation"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "2cc7b352-9606-8a52-427e-4b429e94d72e"
+  }
+}

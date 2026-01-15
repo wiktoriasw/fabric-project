@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Notebook",
+    "displayName": "Great_expectations"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "4cc204e7-04d5-a1c1-4d6d-8dea04b4bf03"
+  }
+}
