@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Notebook",
+    "displayName": "Power Automate send json"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "83054f8a-e1ed-8d26-4037-0ad57de6486f"
+  }
+}
