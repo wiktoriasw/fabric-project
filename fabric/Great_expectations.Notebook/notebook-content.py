@@ -281,7 +281,6 @@ batch = batch_definition.get_batch(batch_parameters={"dataframe": bronze_openaq}
 # CELL ********************
 
 validation_result = batch.validate(suite)
-print(validation_result.to_json_dict())
 
 # METADATA ********************
 
