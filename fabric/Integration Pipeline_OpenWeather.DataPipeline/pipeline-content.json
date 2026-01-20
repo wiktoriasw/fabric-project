@@ -1,0 +1,429 @@
+{
+  "properties": {
+    "activities": [
+      {
+        "type": "Copy",
+        "typeProperties": {
+          "source": {
+            "type": "RestSource",
+            "requestMethod": "GET",
+            "paginationRules": {
+              "supportRFC5988": "true"
+            },
+            "httpRequestTimeout": "00:01:40",
+            "requestInterval": "00.00:00:00.010",
+            "datasetSettings": {
+              "type": "RestResource",
+              "typeProperties": {
+                "relativeUrl": {
+                  "value": "@concat('/data/2.5/weather?lat=',pipeline().parameters.latitude,'&lon=',pipeline().parameters.longitude,'&appid=',pipeline().parameters.api_key,'')",
+                  "type": "Expression"
+                }
+              },
+              "schema": [],
+              "externalReferences": {
+                "connection": "6bf2cf76-0a16-406b-a137-094a853b48ef"
+              },
+              "annotations": []
+            }
+          },
+          "sink": {
+            "type": "JsonSink",
+            "formatSettings": {
+              "type": "JsonWriteSettings"
+            },
+            "storeSettings": {
+              "type": "LakehouseWriteSettings"
+            },
+            "datasetSettings": {
+              "type": "Json",
+              "typeProperties": {
+                "location": {
+                  "type": "LakehouseLocation",
+                  "folderPath": "OpenWeather",
+                  "fileName": "CurrentWeather.json"
+                }
+              },
+              "schema": {},
+              "connectionSettings": {
+                "name": "Lakehouse",
+                "properties": {
+                  "type": "Lakehouse",
+                  "typeProperties": {
+                    "artifactId": "7f69cd39-cf57-864a-4e60-1d1a64e04aa9",
+                    "workspaceId": "00000000-0000-0000-0000-000000000000",
+                    "rootFolder": "Files"
+                  },
+                  "externalReferences": {
+                    "connection": "477cadb0-4aae-4157-a743-6152b53ee4c3"
+                  },
+                  "annotations": []
+                }
+              },
+              "annotations": []
+            }
+          },
+          "enableStaging": false
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "Copy current data from Open Weather",
+        "dependsOn": []
+      },
+      {
+        "type": "Copy",
+        "typeProperties": {
+          "source": {
+            "type": "LakehouseTableSource",
+            "datasetSettings": {
+              "type": "LakehouseTable",
+              "typeProperties": {
+                "schema": "silver",
+                "table": "weather_observation_flat"
+              },
+              "schema": [],
+              "connectionSettings": {
+                "name": "Lakehouse",
+                "properties": {
+                  "type": "Lakehouse",
+                  "typeProperties": {
+                    "artifactId": "7f69cd39-cf57-864a-4e60-1d1a64e04aa9",
+                    "workspaceId": "00000000-0000-0000-0000-000000000000",
+                    "rootFolder": "Tables"
+                  },
+                  "externalReferences": {
+                    "connection": "477cadb0-4aae-4157-a743-6152b53ee4c3"
+                  },
+                  "annotations": []
+                }
+              },
+              "annotations": []
+            }
+          },
+          "sink": {
+            "type": "AzurePostgreSqlSink",
+            "writeMethod": "Upsert",
+            "upsertSettings": {
+              "keys": [
+                "city_id",
+                "dt_utc"
+              ]
+            },
+            "writeBatchSize": 10,
+            "writeBatchTimeout": "00:30:00",
+            "datasetSettings": {
+              "type": "AzurePostgreSqlTable",
+              "typeProperties": {
+                "table": "weather_observation",
+                "schema": "public"
+              },
+              "version": "2.0",
+              "schema": [],
+              "externalReferences": {
+                "connection": "fb9a3db4-4572-4718-899a-7255939266f7"
+              },
+              "annotations": []
+            }
+          },
+          "translator": {
+            "type": "TabularTranslator",
+            "mappings": [
+              {
+                "source": {
+                  "name": "city_id",
+                  "type": "Int64",
+                  "physicalType": "long"
+                },
+                "sink": {
+                  "name": "city_id",
+                  "type": "Int64",
+                  "physicalType": "bigint"
+                }
+              },
+              {
+                "source": {
+                  "name": "dt_utc",
+                  "type": "DateTime",
+                  "physicalType": "timestamp"
+                },
+                "sink": {
+                  "name": "dt_utc",
+                  "type": "DateTime",
+                  "physicalType": "timestamp with time zone"
+                }
+              },
+              {
+                "source": {
+                  "name": "city_name",
+                  "type": "String",
+                  "physicalType": "string"
+                },
+                "sink": {
+                  "name": "city_name",
+                  "type": "String",
+                  "physicalType": "text"
+                }
+              },
+              {
+                "source": {
+                  "name": "country",
+                  "type": "String",
+                  "physicalType": "string"
+                },
+                "sink": {
+                  "name": "country",
+                  "type": "String",
+                  "physicalType": "text"
+                }
+              },
+              {
+                "source": {
+                  "name": "timezone_sec",
+                  "type": "Int64",
+                  "physicalType": "long"
+                },
+                "sink": {
+                  "name": "timezone_sec",
+                  "type": "Int32",
+                  "physicalType": "integer"
+                }
+              },
+              {
+                "source": {
+                  "name": "lat",
+                  "type": "Double",
+                  "physicalType": "double"
+                },
+                "sink": {
+                  "name": "lat",
+                  "type": "Double",
+                  "physicalType": "double precision"
+                }
+              },
+              {
+                "source": {
+                  "name": "lon",
+                  "type": "Double",
+                  "physicalType": "double"
+                },
+                "sink": {
+                  "name": "lon",
+                  "type": "Double",
+                  "physicalType": "double precision"
+                }
+              },
+              {
+                "source": {
+                  "name": "temp",
+                  "type": "Double",
+                  "physicalType": "double"
+                },
+                "sink": {
+                  "name": "temp",
+                  "type": "Double",
+                  "physicalType": "double precision"
+                }
+              },
+              {
+                "source": {
+                  "name": "feels_like",
+                  "type": "Double",
+                  "physicalType": "double"
+                },
+                "sink": {
+                  "name": "feels_like",
+                  "type": "Double",
+                  "physicalType": "double precision"
+                }
+              },
+              {
+                "source": {
+                  "name": "pressure",
+                  "type": "Int64",
+                  "physicalType": "long"
+                },
+                "sink": {
+                  "name": "pressure",
+                  "type": "Int64",
+                  "physicalType": "bigint"
+                }
+              },
+              {
+                "source": {
+                  "name": "humidity",
+                  "type": "Int64",
+                  "physicalType": "long"
+                },
+                "sink": {
+                  "name": "humidity",
+                  "type": "Int64",
+                  "physicalType": "bigint"
+                }
+              },
+              {
+                "source": {
+                  "name": "temp_min",
+                  "type": "Double",
+                  "physicalType": "double"
+                },
+                "sink": {
+                  "name": "temp_min",
+                  "type": "Double",
+                  "physicalType": "double precision"
+                }
+              },
+              {
+                "source": {
+                  "name": "temp_max",
+                  "type": "Double",
+                  "physicalType": "double"
+                },
+                "sink": {
+                  "name": "temp_max",
+                  "type": "Double",
+                  "physicalType": "double precision"
+                }
+              },
+              {
+                "source": {
+                  "name": "wind_speed",
+                  "type": "Double",
+                  "physicalType": "double"
+                },
+                "sink": {
+                  "name": "wind_speed",
+                  "type": "Double",
+                  "physicalType": "double precision"
+                }
+              },
+              {
+                "source": {
+                  "name": "wind_deg",
+                  "type": "Int64",
+                  "physicalType": "long"
+                },
+                "sink": {
+                  "name": "wind_deg",
+                  "type": "Int64",
+                  "physicalType": "bigint"
+                }
+              },
+              {
+                "source": {
+                  "name": "clouds_all",
+                  "type": "Int64",
+                  "physicalType": "long"
+                },
+                "sink": {
+                  "name": "clouds_all",
+                  "type": "Int64",
+                  "physicalType": "bigint"
+                }
+              },
+              {
+                "source": {
+                  "name": "visibility_m",
+                  "type": "Int64",
+                  "physicalType": "long"
+                },
+                "sink": {
+                  "name": "visibility_m",
+                  "type": "Int32",
+                  "physicalType": "integer"
+                }
+              },
+              {
+                "source": {
+                  "name": "weather_main",
+                  "type": "String",
+                  "physicalType": "string"
+                },
+                "sink": {
+                  "name": "weather_main",
+                  "type": "String",
+                  "physicalType": "text"
+                }
+              },
+              {
+                "source": {
+                  "name": "weather_description",
+                  "type": "String",
+                  "physicalType": "string"
+                },
+                "sink": {
+                  "name": "weather_description",
+                  "type": "String",
+                  "physicalType": "text"
+                }
+              }
+            ],
+            "typeConversion": true,
+            "typeConversionSettings": {
+              "allowDataTruncation": true,
+              "treatBooleanAsNumber": false
+            }
+          },
+          "enableStaging": false
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "From silver to psql",
+        "dependsOn": [
+          {
+            "activity": "Flatten json",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "TridentNotebook",
+        "typeProperties": {
+          "notebookId": "e1277fc7-632c-bd13-4840-d06b720ce36f",
+          "workspaceId": "00000000-0000-0000-0000-000000000000"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "Flatten json",
+        "dependsOn": [
+          {
+            "activity": "Copy current data from Open Weather",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ]
+      }
+    ],
+    "parameters": {
+      "latitude": {
+        "type": "string",
+        "defaultValue": "40.71278"
+      },
+      "longitude": {
+        "type": "string",
+        "defaultValue": "-74.00594"
+      },
+      "api_key": {
+        "type": "string",
+        "defaultValue": "9bd5c9cc8a5703127618369ab0df271d"
+      }
+    }
+  }
+}
